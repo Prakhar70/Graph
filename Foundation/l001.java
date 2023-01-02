@@ -117,7 +117,7 @@ class l001 {
         vis[src]=false;
     }
 
-    public static void printPostOrder(int src, boolean[] vis,String str, int sumWt){
+    public static void printPostOrder(int src, boolean[] vis, String str, int sumWt){
 
         
         vis[src]=true;
@@ -128,6 +128,45 @@ class l001 {
             }
         }
         System.out.println(src+"-->"+str+src+"@"+sumWt);
+        vis[src]=false;
+    }
+
+    static class Pair{
+        String longestPath="";
+        String shortestPath="";
+        int longestPathWt = -(int)1e9;
+        int shortestPathWt= (int)1e9;
+        int floor = -(int)1e9;
+        int ceil= (int)1e9;
+    }
+    public static void allSolution(int src, int dest, boolean[] vis, String psf, int wsf, Pair p, int givenWeight){
+        if(src==dest){
+            if(wsf>p.longestPathWt){
+                p.longestPathWt=wsf;
+                p.longestPath=psf+src;
+            }
+            if(wsf<p.shortestPathWt){
+                p.shortestPathWt=wsf;
+                p.shortestPath=psf+src;
+            }
+            if(wsf<givenWeight){
+                p.floor=Math.max(p.floor,wsf);
+            }
+            if(wsf>givenWeight){
+                p.ceil=Math.min(p.ceil,wsf);
+            }
+
+        }
+
+        vis[src]=true;
+        for(Edge e:graph[src]){
+
+            if(!vis[e.v]){
+                allSolution(e.v, dest, vis,psf+src, wsf+e.w,p,givenWeight);
+            }
+        }
+
+
         vis[src]=false;
     }
 
@@ -151,7 +190,13 @@ class l001 {
         System.out.println(find(0,3));
         //System.out.println(hasPath(0,6,vis));
         //System.out.println(CountAllPath(0, 6, vis, ""));
-        printPreOrder(0, vis, "", 0);
+        //printPreOrder(0, vis, "", 0);
+        Pair p=new Pair();
+        allSolution(0,6,vis,"",0,p,40);
+        System.out.println("Longest Path "+ p.longestPath+"@"+p.longestPathWt);
+        System.out.println("Shortest Path "+ p.shortestPath+"@"+p.shortestPathWt);
+        System.out.println("floor "+p.floor);
+        System.out.println("Ceil "+p.ceil);
 
     }
 

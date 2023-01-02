@@ -1,6 +1,7 @@
 package Foundation;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 class l001 {
     public static class Edge {
@@ -139,6 +140,8 @@ class l001 {
         int floor = -(int)1e9;
         int ceil= (int)1e9;
     }
+
+    
     public static void allSolution(int src, int dest, boolean[] vis, String psf, int wsf, Pair p, int givenWeight){
         if(src==dest){
             if(wsf>p.longestPathWt){
@@ -170,6 +173,62 @@ class l001 {
         vis[src]=false;
     }
 
+    static class pqPair{
+        int wsf;
+        String ssf;
+        pqPair(int wsf,String ssf){
+            this.wsf=wsf;
+            this.ssf=ssf;
+        }
+    }
+
+    public static void allSolution_(int src, int dest, boolean[] vis, String psf, int wsf, PriorityQueue<pqPair> pq,int k){
+        if(src==dest){
+            System.out.println(psf+src+"@"+wsf);
+            pq.add(new pqPair(wsf, psf+src));
+            if(pq.size()>k){
+                pq.remove();
+            }
+
+        }
+
+        vis[src]=true;
+        for(Edge e:graph[src]){
+
+            if(!vis[e.v]){
+                allSolution_(e.v, dest, vis,psf+src, wsf+e.w, pq,k);
+            }
+        }
+        vis[src]=false;
+    }
+
+    public static void dfs(int src, boolean[] vis,ArrayList<Integer> ans){
+        vis[src]=true;
+        ans.add(src);
+        for(Edge e:graph[src]){
+            if(!vis[e.v]){
+                dfs(e.v,vis,ans);
+            }
+        }
+    }
+    public static ArrayList<ArrayList<Integer>> getConnectedComp(){
+        ArrayList<ArrayList<Integer>> ans=new ArrayList<>();
+        boolean [] vis=new boolean [N];
+        
+        for(int i=0;i<N;i++){
+            if(vis[i]==false)
+            {
+                ArrayList<Integer> smallAns= new ArrayList<>();
+                dfs(i,vis,smallAns);
+                ans.add(smallAns);
+                
+            }
+                
+        }
+        return ans;
+    }
+  
+
 
 
     public static void main(String[] args) {
@@ -189,14 +248,28 @@ class l001 {
         boolean vis[]=new boolean [graph.length];
         System.out.println(find(0,3));
         //System.out.println(hasPath(0,6,vis));
-        //System.out.println(CountAllPath(0, 6, vis, ""));
+        System.out.println(CountAllPath(0, 6, vis, ""));
         //printPreOrder(0, vis, "", 0);
-        Pair p=new Pair();
-        allSolution(0,6,vis,"",0,p,40);
-        System.out.println("Longest Path "+ p.longestPath+"@"+p.longestPathWt);
-        System.out.println("Shortest Path "+ p.shortestPath+"@"+p.shortestPathWt);
-        System.out.println("floor "+p.floor);
-        System.out.println("Ceil "+p.ceil);
+        // Pair p=new Pair();
+        // allSolution(0,6,vis,"",0,p,40);
+        // System.out.println("Longest Path "+ p.longestPath+"@"+p.longestPathWt);
+        // System.out.println("Shortest Path "+ p.shortestPath+"@"+p.shortestPathWt);
+        // System.out.println("floor "+p.floor);
+        // System.out.println("Ceil "+p.ceil);
+        /* 
+        PriorityQueue<pqPair> pq=new PriorityQueue<>((a,b)->{
+            return a.wsf-b.wsf;
+        });
+        allSolution_(0, 6, vis, "", 0, pq, 2);
+        System.out.println(pq.peek().ssf+"@"+pq.peek().wsf);
+        */
+
+        /********* Get Connected comp *********/
+        // removeEdge(3, 4);
+        // ArrayList<ArrayList<Integer>> list=new ArrayList<>();
+        // list=getConnectedComp();
+        // System.out.println(list);
+
 
     }
 

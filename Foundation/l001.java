@@ -59,11 +59,9 @@ class l001 {
     }
 
     public static void removeVtx(int u){
-        for(Edge e: graph[u]){
-            removeEdge(u,e.v);
-        }
 
        while(graph[u].size()>0){
+           
            int n=graph[u].size();
            int v=graph[u].get(n-1).v;
            removeEdge(u,v);

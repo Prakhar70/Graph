@@ -61,7 +61,7 @@ class l001 {
     public static void removeVtx(int u){
 
        while(graph[u].size()>0){
-           
+
            int n=graph[u].size();
            int v=graph[u].get(n-1).v;
            removeEdge(u,v);
@@ -85,6 +85,52 @@ class l001 {
         return res;
     }
 
+    public static int CountAllPath(int src,int dest,boolean[] vis,String str){
+        if(src == dest){
+            
+            System.out.println(str+src);
+            return 1;
+        }
+
+        vis[src]=true;
+        int cnt=0;
+        
+        for(Edge e:graph[src]){
+            if( !vis[e.v])
+                cnt+=CountAllPath(e.v,dest,vis,str+src);
+        }
+        vis[src]=false;
+
+        return cnt;
+    }
+
+    public static void printPreOrder(int src, boolean[] vis,String str, int sumWt){
+
+        System.out.println(src+"-->"+str+src+"@"+sumWt);
+        vis[src]=true;
+        for(Edge e: graph[src]){
+
+            if(!vis[e.v]){
+                printPreOrder(e.v, vis, str+src , sumWt+e.w);
+            }
+        }
+        vis[src]=false;
+    }
+
+    public static void printPostOrder(int src, boolean[] vis,String str, int sumWt){
+
+        
+        vis[src]=true;
+        for(Edge e: graph[src]){
+
+            if(!vis[e.v]){
+                printPostOrder(e.v, vis, str+src , sumWt+e.w);
+            }
+        }
+        System.out.println(src+"-->"+str+src+"@"+sumWt);
+        vis[src]=false;
+    }
+
 
 
     public static void main(String[] args) {
@@ -103,7 +149,9 @@ class l001 {
         display();
         boolean vis[]=new boolean [graph.length];
         System.out.println(find(0,3));
-        System.out.println(hasPath(0,6,vis));
+        //System.out.println(hasPath(0,6,vis));
+        //System.out.println(CountAllPath(0, 6, vis, ""));
+        printPreOrder(0, vis, "", 0);
 
     }
 

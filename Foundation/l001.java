@@ -227,6 +227,41 @@ class l001 {
         }
         return ans;
     }
+
+    //day 3
+    //leetcode flood fill
+    public static int   numIslands(char[][] grid) {
+        int n=grid.length;
+        int m=grid[0].length;
+        int cnt=0;
+        int[][] dir= {{0,1},{1,0},{0,-1},{-1,0}};
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]=='1'){
+                    cnt++;
+                    dfs(grid,i,j,dir);
+                }
+            }
+        }
+        return cnt;
+        
+    }
+    public static void dfs(char[][] grid,int sr,int sc,int[][] dir){
+       int n=grid.length;
+       int m=grid[0].length;
+        grid[sr][sc]='0';
+        for(int[] d:dir){
+            int r=sr+d[0];
+            int c=sc+d[1];
+            if(r>=0 && r<n && c>=0 && c<m && grid[r][c]!='0'){
+                dfs(grid,r,c,dir);
+            }
+        }
+    }
+
+    public static boolean isGraphConnected(char[][] grid){
+        return numIslands(grid)==1;
+    }
   
 
 

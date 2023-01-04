@@ -1,6 +1,7 @@
 package Foundation;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 class l001 {
@@ -288,6 +289,54 @@ class l001 {
         boolean[] vis=new boolean[N];
         hamintonian_dfs(0, 0, vis, 0, "");
     }
+    public static long journeyToMoon(int n, List<List<Integer>> astronaut) {
+        ArrayList<Integer>[] graph=new ArrayList[n];
+        for(int i=0;i<n;i++){
+            graph[i]=new ArrayList<>();
+        }
+        
+        for(List<Integer> list:astronaut){
+            System.out.println(list);
+            int u=list.get(0);
+            int v=list.get(1);
+           
+            
+            graph[u].add(v);
+            graph[v].add(u);
+            
+        }
+        
+        ArrayList<Long> num_comp_list=new ArrayList<>();
+        boolean[] vis=new boolean[n];
+        for(int i=0;i<n;i++){
+            if(vis[i]==false){
+                long noc=dfs(graph,vis,i);
+                num_comp_list.add(noc);
+            }
+        }
+        
+        long sum=0;
+        long ans=0;
+        for(int i=num_comp_list.size()-1;i>=0;i--){
+            long curr_ele=num_comp_list.get(i);
+            ans=ans+(sum*curr_ele);
+            sum+=curr_ele;
+            
+        }
+        return ans;
+    }
+    static long dfs(ArrayList<Integer> graph[],boolean[] vis,int src){
+        long cnt=0;
+        vis[src]=true;
+        for(int i:graph[src]){
+            if(!vis[i]){
+                cnt+=dfs(graph, vis, i);
+            }
+        }
+        return cnt+1;
+    }
+
+}
   
 
 

@@ -262,6 +262,32 @@ class l001 {
     public static boolean isGraphConnected(char[][] grid){
         return numIslands(grid)==1;
     }
+
+    public static void hamintonian_dfs (int src, int osrc,boolean[] vis,int NoofEdges,String psf){
+        if(NoofEdges == N-1){
+            System.out.print(psf+src);
+            int idx=find(src,osrc);
+            if(idx!=-1){
+                System.out.print("*");
+            }
+            System.out.println();
+            return;
+
+        }
+        vis[src]=true;
+        for(Edge e: graph[src]){
+            if(!vis[e.v]){
+                hamintonian_dfs (e.v, osrc, vis, NoofEdges+1, psf+src);
+            }
+        }
+
+        vis[src]=false;
+    }
+    public static void hamintonian_Path(){
+
+        boolean[] vis=new boolean[N];
+        hamintonian_dfs(0, 0, vis, 0, "");
+    }
   
 
 
@@ -278,12 +304,14 @@ class l001 {
         addEdge(4, 5, 10);
         addEdge(4, 6, 10);
         addEdge(5, 6, 10);
+        addEdge(2, 5, 10);
+        addEdge(0, 6, 10);
 
-        display();
-        boolean vis[]=new boolean [graph.length];
-        System.out.println(find(0,3));
+         display();
+        // boolean vis[]=new boolean [graph.length];
+        // System.out.println(find(0,3));
         //System.out.println(hasPath(0,6,vis));
-        System.out.println(CountAllPath(0, 6, vis, ""));
+        // System.out.println(CountAllPath(0, 6, vis, ""));
         //printPreOrder(0, vis, "", 0);
         // Pair p=new Pair();
         // allSolution(0,6,vis,"",0,p,40);
@@ -304,7 +332,7 @@ class l001 {
         // ArrayList<ArrayList<Integer>> list=new ArrayList<>();
         // list=getConnectedComp();
         // System.out.println(list);
-
+        hamintonian_Path();
 
     }
 

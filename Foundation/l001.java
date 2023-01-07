@@ -396,6 +396,59 @@ class l001 {
             lvl++;
         }
         
+        
+
+    }
+    public static boolean isTree(){
+        //no cycle and GCC=1
+        return true;
+
+    }
+    public static boolean isForest(){
+        //no cycle and GCC>1
+        return true;
+
+    }
+     //-1 --> unvisited
+        //0 ---> red
+        //1 ---> blue
+    public static boolean isBipartite(){
+        LinkedList<Integer> que = new LinkedList<>();
+        int vis[]=new int[N];
+        for(int i=0;i<N;i++){
+            vis[i]=-1;
+        }
+        que.addLast(0);
+        int lvl = 0;
+        while (que.size() > 0) {
+            
+            int size = que.size();
+            while (size-- > 0) {
+                int rVtx = que.removeFirst();
+                if (vis[rVtx] == lvl) {
+                   
+                    continue;
+                }
+                else if(vis[rVtx]==((lvl+1)%2)){
+
+                    return false;
+                }
+                vis[rVtx] = lvl;
+                
+                for (Edge e : graph[rVtx]) {
+                    if (vis[e.v]==-1) {
+                        que.addLast(e.v);
+                    }
+                    else if(vis[e.v]==lvl){
+                        return false;
+                    }
+                }
+
+            }
+            System.out.println();
+            lvl=(lvl+1)%2;
+        }
+        return true;
 
     }
 
@@ -407,11 +460,11 @@ class l001 {
         addEdge(0, 1, 10);
         addEdge(0, 3, 10);
         addEdge(1, 2, 10);
-        addEdge(2, 3, 10);
+        //addEdge(2, 3, 10);
         addEdge(3, 4, 10);
         addEdge(4, 5, 10);
         addEdge(4, 6, 10);
-        addEdge(5, 6, 10);
+       // addEdge(5, 6, 10);
         // addEdge(2, 5, 10);
         // addEdge(0, 6, 10);
 
@@ -443,10 +496,11 @@ class l001 {
         // hamintonian_Path();
 
         // ************************************BFS************************************
-        boolean[] vis = new boolean[N];
-        BFS(vis, 0);
-        vis = new boolean[N];
-        BFS_01(vis, 0);
+        //boolean[] vis = new boolean[N];
+        //BFS(vis, 0);
+        //vis = new boolean[N];
+        //BFS_01(vis, 0);
+        System.out.println(isBipartite());
 
     }
 

@@ -1,6 +1,7 @@
 package LevelUP;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Question {
@@ -186,6 +187,87 @@ public class Question {
     }
 
 
-    /************ */
+    /************ Number of distict island ******************/
+    //https://leetcode.com/problems/number-of-distinct-islands/
+    int[][] dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+    String[] dirS = { "D", "U", "R", "L" };
+
+    StringBuilder sb;
+    int n, m;
+
+    public void numDistinctIslands(int[][] grid, int i, int j) {
+        grid[i][j] = 0;
+        for (int d = 0; d < 4; d++) {
+            int r = i + dir[d][0];
+            int c = j + dir[d][1];
+
+            if (r >= 0 && c >= 0 && r < n && c < m && grid[r][c] == 1) {
+                sb.append(dirS[d]);
+                numDistinctIslands(grid, r, c);
+                sb.append("b");
+            }
+        }
+    }
+
+    public int numDistinctIslands(int[][] grid) {
+        n = grid.length;
+        m = grid[0].length;
+        HashSet<String> set = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 1) {
+                    sb = new StringBuilder();
+                    numDistinctIslands(grid, i, j);
+                    set.add(sb.toString());
+                }
+            }
+        }
+
+        return set.size();
+    }
+    // https://leetcode.com/problems/count-sub-islands/description/
+    public int countSubIslands(int[][] grid1, int[][] grid2) {
+        
+        int n=grid2.length;
+        int m=grid2[0].length;
+        int[][] dir={{1,0},{0,1},{-1,0},{0,-1}};
+        int cnt=0;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid2[i][j]==1){
+                   
+                    boolean isComp=dfs(grid1,grid2,i,j,dir);
+                    if(isComp==true){
+                        cnt++;
+                    }
+
+                    
+                }
+            }
+        }
+        return cnt;
+    }
+    public boolean dfs(int[][] grid1,int[][] grid2,int sr, int sc,int[][] dir){
+
+        int n=grid1.length;
+        int m=grid1[0].length;
+        boolean res=true;
+
+        grid2[sr][sc]=0;
+        
+        for(int[] d:dir){
+            int r=sr+d[0];
+            int c=sc+d[1];
+            if(r>=0 && r<n && c>=0 && c<m && grid2[r][c]==1){
+
+                res=dfs(grid1,grid2,r,c,dir) && res; 
+            }
+        }
+        return res && grid1[sr][sc]==1;
+        
+
+    }
+
 
 }

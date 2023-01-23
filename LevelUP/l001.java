@@ -1,6 +1,7 @@
 package LevelUP;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 //Level 2 class 1 =========DFS===============
 public class l001 {
@@ -104,6 +105,63 @@ public class l001 {
         for(Edge e:graph[src]){
             if(!vis[e.v])
                 dfs_GCC(graph,e.v,vis);
+        }
+    }
+
+
+    //-------DFS-----------
+
+    public static void bfs_cycle(ArrayList<Edge> graph[] , int src ){
+
+        boolean[] vis=new boolean[graph.length];
+        LinkedList<Integer> que=new LinkedList<>();
+        int cycle=0, level=0;
+        que.addLast(src);
+        while(que.size()>0){
+            int size=que.size();
+            while(size-->0){
+                int rVtx=que.removeFirst();
+                if(vis[rVtx]==true){
+                    cycle++;
+                    continue;
+                }
+                vis[rVtx]=true;
+                for(Edge e: graph[rVtx]){
+                    if(!vis[e.v]){
+                        que.addLast(e.v);
+
+                    }
+                }
+            }
+            level++;
+        }
+    }
+
+    //Non Cycle
+    //O(E)
+    public static void bfs(ArrayList<Edge> graph[] , int src ){
+
+        boolean[] vis=new boolean[graph.length];
+        LinkedList<Integer> que=new LinkedList<>();
+        int level=0;
+        que.addLast(src);
+        vis[src]=true;
+        while(que.size()>0){
+
+            int size=que.size();
+            while(size-->0){
+
+                int rVtx=que.removeFirst();
+                for(Edge e: graph[rVtx]){
+
+                    if(!vis[e.v]){
+                        vis[e.v]=true;
+                        que.addLast(e.v);
+                        
+                    }
+                }
+            }
+            level++;
         }
     }
     public static void constructGraph() {
